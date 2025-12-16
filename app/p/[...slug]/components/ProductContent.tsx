@@ -104,7 +104,7 @@ export async function ProductContent({
 
         {/* Ingredientes */}
         <div className="bg-white border-2 border-gray-200 rounded-xl p-5 shadow-sm">
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-900">
             <span>🍹</span>
             <span>Ingredients</span>
           </h2>
@@ -123,7 +123,7 @@ export async function ProductContent({
 
         {/* Instrucciones */}
         <div className="bg-white border-2 border-gray-200 rounded-xl p-5 shadow-sm">
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-900">
             <span>📝</span>
             <span>Instructions</span>
           </h2>
