@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   // Habilita PPR + Cache Components
   cacheComponents: true,
   images: {
-    remotePatterns: [new URL('www.thecocktaildb.com/**')],
+    remotePatterns: [new URL('https://www.thecocktaildb.com/**')],
   },
 };
 
