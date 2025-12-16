@@ -14,7 +14,9 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    revalidateTag(tag);
+    // El segundo argumento es requerido en Next.js 16
+    // "max" usa stale-while-revalidate semantics (recomendado)
+    revalidateTag(tag, "max");
 
     return NextResponse.json({
       success: true,
