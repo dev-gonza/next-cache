@@ -40,8 +40,7 @@ export async function GET() {
       url: "/api/revalidate?tag=<cache-tag>",
     },
     availableTags: [
-      "product-{slug} - Invalida cache de un producto específico",
-      "color-{code} - Invalida cache de un color específico en todos los productos",
+      "cocktail-{id} - Invalida cache de un cocktail específico (ej: cocktail-11007)",
     ],
   });
 }

@@ -15,45 +15,73 @@ export default function Home() {
         />
         <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
           <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            PPR + Cache Components Demo
+            "use cache" + Real API Demo 🍸
           </h1>
           <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Ejemplo de caching de páginas dinámicas con query params usando{" "}
+            Ejemplo de caching de páginas dinámicas con API pública real usando{" "}
             <code className="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">use cache</code>.
           </p>
 
-          {/* Enlaces a productos de ejemplo */}
+          {/* Enlaces a cocktails de ejemplo */}
           <div className="w-full mt-4 p-4 bg-zinc-100 dark:bg-zinc-900 rounded-lg">
-            <h2 className="font-semibold mb-3 text-black dark:text-white">Productos de ejemplo:</h2>
+            <h2 className="font-semibold mb-3 text-black dark:text-white">🍹 Cocktails populares:</h2>
             <ul className="space-y-2">
               <li>
                 <Link 
-                  href="/p/women/pants/dress-pants_87081511?c=92"
+                  href="/p/11007"
                   className="text-blue-600 hover:underline dark:text-blue-400"
                 >
-                  👖 Straight mid-rise pants (Beige)
+                  🍹 Margarita
                 </Link>
               </li>
               <li>
                 <Link 
-                  href="/p/women/pants/dress-pants_87081511?c=99"
+                  href="/p/11000"
                   className="text-blue-600 hover:underline dark:text-blue-400"
                 >
-                  👖 Straight mid-rise pants (Black)
+                  🍹 Mojito
                 </Link>
               </li>
               <li>
                 <Link 
-                  href="/p/women/pants/dress-pants_87081511?c=05"
+                  href="/p/17222"
                   className="text-blue-600 hover:underline dark:text-blue-400"
                 >
-                  👖 Straight mid-rise pants (Navy)
+                  🍹 A1
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/p/13501"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  🍹 ABC
                 </Link>
               </li>
             </ul>
             <p className="mt-3 text-sm text-zinc-500">
-              Cada <code className="bg-zinc-200 dark:bg-zinc-800 px-1 rounded">?c=XX</code> tiene su propio cache entry.
+              Datos desde{" "}
+              <a
+                href="https://www.thecocktaildb.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                TheCocktailDB API
+              </a>
             </p>
+          </div>
+
+          {/* Info técnica */}
+          <div className="w-full mt-4 p-4 bg-green-100 dark:bg-green-900 rounded-lg border-2 border-green-300">
+            <h2 className="font-semibold mb-2 text-green-900 dark:text-green-100">
+              ✅ API Real Caching
+            </h2>
+            <ul className="text-sm text-green-700 dark:text-green-300 space-y-1">
+              <li>• <strong>Primera visita</strong>: Fetch API → log en consola</li>
+              <li>• <strong>Refresca</strong>: Cache HIT → sin log, instantáneo</li>
+              <li>• <strong>Invalidación</strong>: POST /api/revalidate?tag=cocktail-11007</li>
+            </ul>
           </div>
 
 
