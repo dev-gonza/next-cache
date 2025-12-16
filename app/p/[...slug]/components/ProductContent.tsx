@@ -1,4 +1,5 @@
 import { getCachedCocktail, CocktailVariant } from "@/lib/data/products";
+import Image from "next/image";
 
 interface CocktailContentProps {
   cocktailId: string;
@@ -41,9 +42,11 @@ export async function ProductContent({
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
       {/* Imagen del cocktail */}
       <div className="aspect-square bg-gradient-to-br from-purple-100 via-blue-100 to-pink-100 rounded-2xl overflow-hidden shadow-xl">
-        <img
+        <Image
           src={cocktail.image}
           alt={cocktail.name}
+          width={500}
+          height={500}
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
         />
       </div>
