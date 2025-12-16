@@ -34,17 +34,17 @@ function parseIngredients(drink: CocktailAPIData) {
  */
 export async function getCachedCocktail(
   cocktailId: string,
-  variant: string = "classic"
+  variant?: string
 ): Promise<Cocktail | null> {
   "use cache";
 
   // Tags para invalidación on-demand
-  cacheTag(`cocktail-${cocktailId}`, `variant-${variant}`);
+  cacheTag(`cocktail-${cocktailId}`, `variant-${variant || "default"}`);
 
   // Tiempo de cache: 1 hora stale, 2 horas revalidate
   cacheLife("hours");
 
-  console.log(`[CACHE MISS] Fetching cocktail from API: ${cocktailId}, variant: ${variant}`);
+  console.log(`[CACHE MISS] Fetching cocktail from API: ${cocktailId}, variant: ${variant || "(none)"}`);
 
   try {
     // Llamada REAL a la API pública

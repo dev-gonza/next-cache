@@ -19,9 +19,8 @@ export async function ProductContent({
   // 1. Leer runtime data (searchParams es dinámico)
   const { v: variant } = await searchParams;
   
-  // 2. Pasar VALORES primitivos a la función cacheada
-  // El variant se convierte en parte del cache key
-  const cocktail = await getCachedCocktail(cocktailId, variant || "classic");
+  // 2. Pasar variant tal cual viene al cache
+  const cocktail = await getCachedCocktail(cocktailId, variant);
 
   if (!cocktail) {
     return (
@@ -65,14 +64,14 @@ export async function ProductContent({
           <p className="text-sm font-semibold mb-3 text-gray-700">
             🎚️ Choose your variant:{" "}
             <span className="capitalize text-purple-600">
-              {variant || "classic"}
+              {variant || "default"}
             </span>
           </p>
           <div className="flex flex-wrap gap-3">
             <a
               href={`?v=classic`}
               className={`px-5 py-3 rounded-lg border-2 transition-all font-medium ${
-                (!variant || variant === "classic")
+                variant === "classic"
                   ? "border-purple-500 bg-white shadow-md text-purple-700 scale-105"
                   : "border-gray-300 hover:border-purple-400 hover:bg-white"
               }`}
@@ -146,18 +145,18 @@ export async function ProductContent({
             </li>
             <li>
               • Variant:{" "}
-              <code className="bg-green-100 px-1 rounded">{variant || "classic"}</code>
+              <code className="bg-green-100 px-1 rounded">{variant || "(none)"}</code>
             </li>
             <li>
               • Cache key:{" "}
               <code className="bg-green-100 px-1 rounded text-xs">
-                {`{ cocktailId: "${cocktail.id}", variant: "${variant || "classic"}" }`}
+                {`{ cocktailId: "${cocktail.id}", variant: "${variant || ""}" }`}
               </code>
             </li>
             <li>
               • Cache tags:{" "}
               <code className="bg-green-100 px-1 rounded text-xs">
-                cocktail-{cocktail.id}, variant-{variant || "classic"}
+                cocktail-{cocktail.id}, variant-{variant || "default"}
               </code>
             </li>
             <li>
