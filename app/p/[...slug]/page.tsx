@@ -16,9 +16,6 @@ interface Product {
 // PÁGINA PRINCIPAL - Static Shell + Dynamic Content
 // ============================================
 
-// Permite que rutas no especificadas en generateStaticParams se generen on-demand
-export const dynamicParams = true;
-
 // Genera las rutas estáticas en build time
 export async function generateStaticParams() {
   // Define las rutas de productos que quieres pre-renderizar
