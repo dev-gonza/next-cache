@@ -27,11 +27,11 @@ export default async function CocktailPage({
   const cocktailId = slug[0]; // El primer segmento es el ID del cocktail
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
       {/* ✅ STATIC SHELL - Pre-renderizado en build */}
       <Header />
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-7xl mx-auto px-4 py-12">
         {/* ✅ DYNAMIC CONTENT - Cacheado con "use cache" + API REAL + Query Params */}
         <Suspense fallback={<ProductSkeleton />}>
           <ProductContent cocktailId={cocktailId} searchParams={searchParams} />
