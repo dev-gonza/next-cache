@@ -6,6 +6,7 @@ import { ProductSkeleton } from "./components/ProductSkeleton";
 
 interface CocktailPageProps {
   params: Promise<{ slug: string[] }>;
+  searchParams: Promise<{ v?: string }>;
 }
 
 /**
@@ -15,10 +16,13 @@ interface CocktailPageProps {
  * - Static Shell (Header, Footer) → Pre-renderizado, servido desde CDN
  * - Dynamic Content (ProductContent) → Streaming con datos cacheados desde API REAL
  * 
- * Rutas dinámicas: /p/11007 (Margarita), /p/11000 (Mojito), etc.
- * Cache: Cada cocktail se cachea después del primer request
+ * Query params: ?v=classic, ?v=frozen, ?v=double
+ * Cache: Cada combinación de cocktailId + variant tiene su propia entrada
  */
-export default async function CocktailPage({ params }: CocktailPageProps) {
+export default async function CocktailPage({ 
+  params, 
+  searchParams 
+}: CocktailPageProps) {
   const { slug } = await params;
   const cocktailId = slug[0]; // El primer segmento es el ID del cocktail
 
@@ -28,9 +32,9 @@ export default async function CocktailPage({ params }: CocktailPageProps) {
       <Header />
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* ✅ DYNAMIC CONTENT - Cacheado con "use cache" + API REAL */}
+        {/* ✅ DYNAMIC CONTENT - Cacheado con "use cache" + API REAL + Query Params */}
         <Suspense fallback={<ProductSkeleton />}>
-          <ProductContent cocktailId={cocktailId} />
+          <ProductContent cocktailId={cocktailId} searchParams={searchParams} />
         </Suspense>
       </main>
 

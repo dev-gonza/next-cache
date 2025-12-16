@@ -24,23 +24,27 @@ function parseIngredients(drink: CocktailAPIData) {
  * Función cacheada que obtiene datos de un cocktail desde TheCocktailDB
  * 
  * @param cocktailId - ID del cocktail (ej: "11007" para Margarita)
+ * @param variant - Variante del cocktail (ej: "classic", "frozen", "strawberry")
  * @returns Datos del cocktail
  * 
- * Cache key automático: { cocktailId }
- * Cache tags: "cocktail-{cocktailId}"
+ * Cache key automático: { cocktailId, variant }
+ * Cache tags: "cocktail-{cocktailId}", "variant-{variant}"
  * 
  * API: https://www.thecocktaildb.com/api.php
  */
-export async function getCachedCocktail(cocktailId: string): Promise<Cocktail | null> {
+export async function getCachedCocktail(
+  cocktailId: string,
+  variant: string = "classic"
+): Promise<Cocktail | null> {
   "use cache";
 
   // Tags para invalidación on-demand
-  cacheTag(`cocktail-${cocktailId}`);
+  cacheTag(`cocktail-${cocktailId}`, `variant-${variant}`);
 
   // Tiempo de cache: 1 hora stale, 2 horas revalidate
   cacheLife("hours");
 
-  console.log(`[CACHE MISS] Fetching cocktail from API: ${cocktailId}`);
+  console.log(`[CACHE MISS] Fetching cocktail from API: ${cocktailId}, variant: ${variant}`);
 
   try {
     // Llamada REAL a la API pública
@@ -65,14 +69,26 @@ export async function getCachedCocktail(cocktailId: string): Promise<Cocktail | 
 
     const drink = data.drinks[0];
 
+    // Aplicar modificaciones según la variante
+    let name = drink.strDrink;
+    let instructions = drink.strInstructions;
+    
+    if (variant === "frozen") {
+      name = `${drink.strDrink} (Frozen)`;
+      instructions = `FROZEN VERSION: Blend all ingredients with ice. ${drink.strInstructions}`;
+    } else if (variant === "double") {
+      name = `${drink.strDrink} (Double)`;
+      instructions = `DOUBLE STRENGTH: Use double portions of alcohol. ${drink.strInstructions}`;
+    }
+
     // Normalizar datos de la API
     return {
       id: drink.idDrink,
-      name: drink.strDrink,
+      name,
       category: drink.strCategory,
       alcoholic: drink.strAlcoholic,
       glass: drink.strGlass,
-      instructions: drink.strInstructions,
+      instructions,
       image: drink.strDrinkThumb,
       ingredients: parseIngredients(drink),
     };

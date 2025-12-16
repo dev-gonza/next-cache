@@ -28,38 +28,54 @@ export default function Home() {
             <ul className="space-y-2">
               <li>
                 <Link 
-                  href="/p/11007"
+                  href="/p/11007?v=classic"
                   className="text-blue-600 hover:underline dark:text-blue-400"
                 >
-                  🍹 Margarita
+                  🍹 Margarita (Classic)
+                </Link>
+                {" • "}
+                <Link 
+                  href="/p/11007?v=frozen"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  Frozen
+                </Link>
+                {" • "}
+                <Link 
+                  href="/p/11007?v=double"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  Double
                 </Link>
               </li>
               <li>
                 <Link 
-                  href="/p/11000"
+                  href="/p/11000?v=classic"
                   className="text-blue-600 hover:underline dark:text-blue-400"
                 >
-                  🍹 Mojito
+                  🍹 Mojito (Classic)
+                </Link>
+                {" • "}
+                <Link 
+                  href="/p/11000?v=frozen"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  Frozen
                 </Link>
               </li>
               <li>
                 <Link 
-                  href="/p/17222"
+                  href="/p/17222?v=classic"
                   className="text-blue-600 hover:underline dark:text-blue-400"
                 >
                   🍹 A1
                 </Link>
               </li>
-              <li>
-                <Link 
-                  href="/p/13501"
-                  className="text-blue-600 hover:underline dark:text-blue-400"
-                >
-                  🍹 ABC
-                </Link>
-              </li>
             </ul>
             <p className="mt-3 text-sm text-zinc-500">
+              Cada <code className="bg-zinc-200 dark:bg-zinc-800 px-1 rounded">?v=variant</code> tiene su propia cache entry.
+            </p>
+            <p className="mt-1 text-sm text-zinc-500">
               Datos desde{" "}
               <a
                 href="https://www.thecocktaildb.com/"
@@ -75,11 +91,13 @@ export default function Home() {
           {/* Info técnica */}
           <div className="w-full mt-4 p-4 bg-green-100 dark:bg-green-900 rounded-lg border-2 border-green-300">
             <h2 className="font-semibold mb-2 text-green-900 dark:text-green-100">
-              ✅ API Real Caching
+              ✅ API Real Caching + Query Params
             </h2>
             <ul className="text-sm text-green-700 dark:text-green-300 space-y-1">
               <li>• <strong>Primera visita</strong>: Fetch API → log en consola</li>
               <li>• <strong>Refresca</strong>: Cache HIT → sin log, instantáneo</li>
+              <li>• <strong>Cambia variant</strong> (?v=frozen): Cache MISS → nuevo fetch</li>
+              <li>• <strong>Vuelve a variant</strong> anterior: Cache HIT ✅</li>
               <li>• <strong>Invalidación</strong>: POST /api/revalidate?tag=cocktail-11007</li>
             </ul>
           </div>

@@ -2,19 +2,26 @@ import { getCachedCocktail } from "@/lib/data/products";
 
 interface CocktailContentProps {
   cocktailId: string;
+  searchParams: Promise<{ v?: string }>;
 }
 
 /**
  * Componente que muestra un cocktail usando datos cacheados
  * desde TheCocktailDB API real.
  * 
- * Este componente se renderiza dentro de <Suspense>, permitiendo
- * que el static shell se sirva inmediatamente mientras este
- * contenido se genera de forma dinámica.
+ * Usa searchParams para cambiar la variante del cocktail (classic, frozen, double)
+ * Cada combinación de cocktailId + variant tiene su propia cache entry.
  */
-export async function ProductContent({ cocktailId }: CocktailContentProps) {
-  // Llamar a la función cacheada con la API REAL
-  const cocktail = await getCachedCocktail(cocktailId);
+export async function ProductContent({ 
+  cocktailId, 
+  searchParams 
+}: CocktailContentProps) {
+  // 1. Leer runtime data (searchParams es dinámico)
+  const { v: variant } = await searchParams;
+  
+  // 2. Pasar VALORES primitivos a la función cacheada
+  // El variant se convierte en parte del cache key
+  const cocktail = await getCachedCocktail(cocktailId, variant || "classic");
 
   if (!cocktail) {
     return (
@@ -62,6 +69,48 @@ export async function ProductContent({ cocktailId }: CocktailContentProps) {
           </ul>
         </div>
 
+        {/* Selector de variantes */}
+        <div>
+          <p className="text-sm font-medium mb-3">
+            Variant:{" "}
+            <span className="capitalize">
+              {variant || "classic"}
+            </span>
+          </p>
+          <div className="flex gap-2">
+            <a
+              href={`?v=classic`}
+              className={`px-4 py-2 rounded-lg border-2 transition-all ${
+                (!variant || variant === "classic")
+                  ? "border-blue-500 bg-blue-50 font-semibold"
+                  : "border-gray-300 hover:border-gray-400"
+              }`}
+            >
+              🍹 Classic
+            </a>
+            <a
+              href={`?v=frozen`}
+              className={`px-4 py-2 rounded-lg border-2 transition-all ${
+                variant === "frozen"
+                  ? "border-blue-500 bg-blue-50 font-semibold"
+                  : "border-gray-300 hover:border-gray-400"
+              }`}
+            >
+              🧊 Frozen
+            </a>
+            <a
+              href={`?v=double`}
+              className={`px-4 py-2 rounded-lg border-2 transition-all ${
+                variant === "double"
+                  ? "border-blue-500 bg-blue-50 font-semibold"
+                  : "border-gray-300 hover:border-gray-400"
+              }`}
+            >
+              💪 Double
+            </a>
+          </div>
+        </div>
+
         {/* Instrucciones */}
         <div>
           <h2 className="text-lg font-semibold mb-3">📝 Instructions</h2>
@@ -70,7 +119,7 @@ export async function ProductContent({ cocktailId }: CocktailContentProps) {
 
         {/* Info de cache - Solo para debugging */}
         <div className="mt-8 p-4 bg-green-50 border-2 border-green-200 rounded-lg text-sm">
-          <p className="font-bold text-green-800 mb-2">✅ REAL API CACHING</p>
+          <p className="font-bold text-green-800 mb-2">✅ REAL API CACHING WITH QUERY PARAMS</p>
           <ul className="space-y-1 text-green-700">
             <li>
               • API:{" "}
@@ -83,9 +132,19 @@ export async function ProductContent({ cocktailId }: CocktailContentProps) {
               <code className="bg-green-100 px-1 rounded">{cocktail.id}</code>
             </li>
             <li>
-              • Cache tag:{" "}
-              <code className="bg-green-100 px-1 rounded">
-                cocktail-{cocktail.id}
+              • Variant:{" "}
+              <code className="bg-green-100 px-1 rounded">{variant || "classic"}</code>
+            </li>
+            <li>
+              • Cache key:{" "}
+              <code className="bg-green-100 px-1 rounded text-xs">
+                {`{ cocktailId: "${cocktail.id}", variant: "${variant || "classic"}" }`}
+              </code>
+            </li>
+            <li>
+              • Cache tags:{" "}
+              <code className="bg-green-100 px-1 rounded text-xs">
+                cocktail-{cocktail.id}, variant-{variant || "classic"}
               </code>
             </li>
             <li>
