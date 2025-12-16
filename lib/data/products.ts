@@ -2,6 +2,15 @@ import { cacheLife, cacheTag } from "next/cache";
 import type { Cocktail, CocktailAPIResponse, CocktailAPIData } from "@/lib/types/product";
 
 /**
+ * Enum de variantes de cocktail disponibles
+ */
+export enum CocktailVariant {
+  CLASSIC = "classic",
+  FROZEN = "frozen",
+  DOUBLE = "double",
+}
+
+/**
  * Función helper para parsear ingredientes de la API
  */
 function parseIngredients(drink: CocktailAPIData) {
@@ -24,7 +33,7 @@ function parseIngredients(drink: CocktailAPIData) {
  * Función cacheada que obtiene datos de un cocktail desde TheCocktailDB
  * 
  * @param cocktailId - ID del cocktail (ej: "11007" para Margarita)
- * @param variant - Variante del cocktail (ej: "classic", "frozen", "strawberry")
+ * @param variant - Variante del cocktail (ej: "classic", "frozen", "double")
  * @returns Datos del cocktail
  * 
  * Cache key automático: { cocktailId, variant }
@@ -38,13 +47,19 @@ export async function getCachedCocktail(
 ): Promise<Cocktail | null> {
   "use cache";
 
+  // Validar y normalizar variante - default a "classic" si no es válida
+  const validVariants = Object.values(CocktailVariant);
+  const normalizedVariant = variant && validVariants.includes(variant as CocktailVariant)
+    ? variant
+    : CocktailVariant.CLASSIC;
+
   // Tags para invalidación on-demand
-  cacheTag(`cocktail-${cocktailId}`, `variant-${variant || "default"}`);
+  cacheTag(`cocktail-${cocktailId}`, `variant-${normalizedVariant}`);
 
   // Tiempo de cache: 1 hora stale, 2 horas revalidate
   cacheLife("hours");
 
-  console.log(`[CACHE MISS] Fetching cocktail from API: ${cocktailId}, variant: ${variant || "(none)"}`);
+  console.log(`[CACHE MISS] Fetching cocktail from API: ${cocktailId}, variant: ${normalizedVariant}`);
 
   try {
     // Llamada REAL a la API pública
@@ -73,10 +88,10 @@ export async function getCachedCocktail(
     let name = drink.strDrink;
     let instructions = drink.strInstructions;
     
-    if (variant === "frozen") {
+    if (normalizedVariant === CocktailVariant.FROZEN) {
       name = `${drink.strDrink} (Frozen)`;
       instructions = `FROZEN VERSION: Blend all ingredients with ice. ${drink.strInstructions}`;
-    } else if (variant === "double") {
+    } else if (normalizedVariant === CocktailVariant.DOUBLE) {
       name = `${drink.strDrink} (Double)`;
       instructions = `DOUBLE STRENGTH: Use double portions of alcohol. ${drink.strInstructions}`;
     }

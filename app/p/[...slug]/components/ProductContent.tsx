@@ -1,4 +1,4 @@
-import { getCachedCocktail } from "@/lib/data/products";
+import { getCachedCocktail, CocktailVariant } from "@/lib/data/products";
 
 interface CocktailContentProps {
   cocktailId: string;
@@ -17,9 +17,15 @@ export async function ProductContent({
   searchParams 
 }: CocktailContentProps) {
   // 1. Leer runtime data (searchParams es dinámico)
-  const { v: variant } = await searchParams;
+  const { v: variantParam } = await searchParams;
   
-  // 2. Pasar variant tal cual viene al cache
+  // 2. Validar variante - si no es válida o no existe, usar "classic"
+  const validVariants = Object.values(CocktailVariant);
+  const variant = variantParam && validVariants.includes(variantParam as CocktailVariant)
+    ? variantParam
+    : CocktailVariant.CLASSIC;
+  
+  // 3. Llamar al cache con la variante validada
   const cocktail = await getCachedCocktail(cocktailId, variant);
 
   if (!cocktail) {
@@ -64,7 +70,7 @@ export async function ProductContent({
           <p className="text-sm font-semibold mb-3 text-gray-700">
             🎚️ Choose your variant:{" "}
             <span className="capitalize text-purple-600">
-              {variant || "default"}
+              {variant}
             </span>
           </p>
           <div className="flex flex-wrap gap-3">
