@@ -38,10 +38,6 @@ export async function GET() {
     usage: {
       method: "POST",
       url: "/api/revalidate?tag=<cache-tag>",
-      examples: [
-        "POST /api/revalidate?tag=product-87081511",
-        "POST /api/revalidate?tag=color-92",
-      ],
     },
     availableTags: [
       "product-{slug} - Invalida cache de un producto específico",
