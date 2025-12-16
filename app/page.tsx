@@ -55,6 +55,20 @@ export default function Home() {
               Cada <code className="bg-zinc-200 dark:bg-zinc-800 px-1 rounded">?c=XX</code> tiene su propio cache entry.
             </p>
           </div>
+
+          {/* Enlace a ejemplos */}
+          <div className="w-full mt-4 p-4 bg-purple-100 dark:bg-purple-900 rounded-lg border-2 border-purple-300">
+            <h2 className="font-semibold mb-2 text-purple-900 dark:text-purple-100">📚 Ejemplos de "use cache":</h2>
+            <p className="text-sm text-purple-700 dark:text-purple-300 mb-3">
+              Aprende todas las formas de implementar la directiva "use cache" en Next.js 16
+            </p>
+            <Link 
+              href="/examples"
+              className="inline-block px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
+            >
+              Ver Ejemplos →
+            </Link>
+          </div>
         </div>
         <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
           <a
