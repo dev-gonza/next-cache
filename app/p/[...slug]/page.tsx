@@ -15,6 +15,15 @@ interface Product {
 // ============================================
 // PÁGINA PRINCIPAL - Static Shell + Dynamic Content
 // ============================================
+
+// Genera las rutas estáticas en build time
+export async function generateStaticParams() {
+  // Define las rutas de productos que quieres pre-renderizar
+  return [
+    { slug: ["women", "pants", "dress-pants_87081511"] },
+  ];
+}
+
 export default async function ProductPage({
   params,
   searchParams,
